@@ -14,76 +14,50 @@
 // После нажатия на кнопку страница не должна перезагружаться
 // Можно менять разметку, добавлять атрибуты, теги, id, классы и так далее.
 
+
 const form = document.getElementById('form');
 const password = document.getElementById('password');
 const password2 = document.getElementById('password2');
-const toggle = document.getElementById('btnToggle');
-const icon =  document.querySelector('i');
-const button = document.getElementById('btn');
+const icon = document.querySelector('i');
+const errorMesage = document.querySelector('.error');
+const button = document.querySelector('.btn');
 
 
-password.addEventListener('click', e => {   
-    togglePassword();
+
+form.addEventListener('click', (event) => {
+  if (event.target.tagName === "I") {
+    togglePassword(event.target);
+  }
 });
 
-password2.addEventListener('click', e => {   
-    togglePassword2();
-});
+function togglePassword(iconElement) {
+  iconElement.classList.toggle('fa-eye-slash');
+  const inputElement = iconElement.previousElementSibling;
 
-button.addEventListener('click', e =>{
-    checkInputs();
-});
-
-function togglePassword() {
-  if (password.type === 'password') {
-    password.type = 'text';
-    icon.classList.add("fa-eye-slash");    
+  if (inputElement.type = inputElement.type === 'password') {
+    inputElement.type = 'text';
   } else {
-    password.type = 'password';
-    icon.classList.remove("fa-eye-slash");   
+    inputElement.type = 'password';
+    // errorMesage.remove();
   }
 }
 
+button.addEventListener('click', event => {
+  event.preventDefault();
 
-function togglePassword2() {
-    if (password2.type === 'password') {
-      password2.type = 'text';
-      icon.classList.add("fa-eye-slash");    
-    } else {
-      password2.type = 'password';
-      icon.classList.remove("fa-eye-slash");   
-    }
+  if (
+    password.value &&
+    password.value === password2.value
+  ) {
+    // errorMesage.remove();
+    alert('You are welcome');
+
+  } else if (!password.value) {
+    alert('Please fill in password field');
+  } else {
+    errorMesage.classList.add('visible');
   }
-
-
-  function checkInputs() {
-	const passwordValue = password.value.trim();
-	const password2Value = password2.value.trim();
-
-	if(passwordValue !== password2Value) {	
-	    showError();
-	} else{
-		createAlert();
-	}
-}
-
-
-function showError() {
-    const errorElement = document.querySelector('.error');
-    errorElement.classList.add('visible');
-}
-
-function hideError() {
-    const errorElement = document.querySelector('.error');
-    errorElement.classList.remove('visible');
-}
-
-function createAlert() {
-    const alertElem = document.createElement('div');
-    alertElem.innerHTML = 'You are welcome';
-    alertElem.className = "alert";
-    document.getElementById("btn").after(alertElem);
-  }
+});
 
 
 
